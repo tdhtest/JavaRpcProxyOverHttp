@@ -1,0 +1,38 @@
+public CloseableHttpResponse sendHttpRequest() {
+    HttpGet httpGet = new HttpGet("https://example.com");
+    URI uri = new URIBuilder(httpGet.getURI())
+      .addParameter("param1", "value1")
+      .addParameter("param2", "value2")
+      .build();
+   ((HttpRequestBase) httpGet).setURI(uri);
+    CloseableHttpResponse response = client.execute(httpGet);
+    client.close();
+}
+Also, we can go with the NameValuePair list for HttpClient request:
+
+public CloseableHttpResponse sendHttpRequest() {
+    List nameValuePairs = new ArrayList();
+    nameValuePairs.add(new BasicNameValuePair("param1", "value1"));
+    nameValuePairs.add(new BasicNameValuePair("param2", "value2"));
+    HttpGet httpGet = new HttpGet("https://example.com");
+    URI uri = new URIBuilder(httpGet.getURI())
+      .addParameters(nameValuePairs)
+      .build();
+   ((HttpRequestBase) httpGet).setURI(uri);
+    CloseableHttpResponse response = client.execute(httpGet);
+    client.close();
+}
+
+
+
+
+
+public CloseableHttpResponse sendHttpRequest() {
+    List nameValuePairs = new ArrayList();
+    nameValuePairs.add(new BasicNameValuePair("param1", "value1"));
+    nameValuePairs.add(new BasicNameValuePair("param2", "value2"));
+    HttpPost httpPost = new HttpPost("https://example.com");
+    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, StandardCharsets.UTF_8));
+    CloseableHttpResponse response = client.execute(httpPost);
+    client.close();
+}
